@@ -1,5 +1,6 @@
 import pygame
 import sys
+from pathlib import Path
 pygame.init()
 
 
@@ -11,6 +12,19 @@ displayh = TILES * TILE_SIZE
 window = pygame.display.set_mode((displayw,displayh))
 
 clock = pygame.time.Clock()
+
+BASE_DIR = Path(__file__).resolve().parent
+ASSETS_DIR = BASE_DIR.parent / "assets"
+CODE_DIR = BASE_DIR.parent / "code"
+
+PLAYER = CODE_DIR / "player.py"
+from code.player import Player
+
+player = Player(100, 100)
+
+all_sprites = pygame.sprite.Group()
+all_sprites.add(player)
+
 
 class main():
 	def __init__(self, displayh, displayw):
@@ -35,9 +49,14 @@ class main():
 					sys.exit()
 
 
+			
+			all_sprites.update()
 
+			window.fill((30, 30, 30))
+			all_sprites.draw(window)
+			
 		
-			18, 171, 227
+			
 			pygame.display.update()
 			clock.tick(60)
 
