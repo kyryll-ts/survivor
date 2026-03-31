@@ -1,17 +1,19 @@
 import pygame
 
-class SpriteSheet(object):
-    def __init__(self, file_name):
-        """ Constructor. Pass in the file name of the sprite sheet. """
-        try:
-            self.sprite_sheet = pygame.image.load(file_name).convert_alpha()
-        except pygame.error as message:
-            print('Cannot load image:', file_name)
-            raise SystemExit(message)
+def load_animation_sets(sheet_path, frame_width, frame_height, rows, cols):
+    
+    sheet = pygame.image.load(sheet_path).convert_alpha()
+    all_animations = []
 
-    def get_image(self, x, y, width, height):
+    for row in range(rows):
+        temp_list = []
+        for col in range(cols):
+            
+            x = col * frame_width
+            y = row * frame_height
+            
+            frame = sheet.subsurface((x, y, frame_width, frame_height))
+            temp_list.append(frame)
+        all_animations.append(temp_list)
         
-        image = pygame.Surface([width, height], pygame.SRCALPHA).convert_alpha()
-        image.blit(self.sprite_sheet, (0, 0), (x, y, width, height))
-        
-        return image
+    return all_animations

@@ -49,7 +49,7 @@ class main():
 					sys.exit()
 
 
-			
+			player.input_update()
 			all_sprites.update()
 
 			window.fill((30, 30, 30))
