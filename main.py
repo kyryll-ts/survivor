@@ -19,15 +19,21 @@ CODE_DIR = BASE_DIR.parent / "code"
 
 PLAYER = CODE_DIR / "player.py"
 from code.player import Player
+from code.enemy import Enemy
 
-player = Player(100, 100)
+player = Player(displayw //2, displayh //2)
+enemy = Enemy(displayw //2,10)
 
 all_sprites = pygame.sprite.Group()
+all_sprites.add(enemy)
 all_sprites.add(player)
 
 
-class main():
+
+class main(pygame.sprite.Sprite):
 	def __init__(self, displayh, displayw):
+
+		super().__init__()
 
 		self.dh = displayh
 		self.dw = displayw
@@ -48,11 +54,15 @@ class main():
 					pygame.quit()
 					sys.exit()
 
+			enemy.update(player.rect)
 
+			#enemy.check_player_collision(player.rect)
 			player.input_update()
-			all_sprites.update()
+			player.check_screen_collision(displayh, displayw)
+			all_sprites.update(player.rect)
 
 			window.fill((30, 30, 30))
+			enemy.draw(window)
 			all_sprites.draw(window)
 			
 		

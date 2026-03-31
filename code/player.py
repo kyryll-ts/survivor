@@ -16,12 +16,13 @@ class Player(pygame.sprite.Sprite):
         self.dx =0
         self.dy =0
 
-        self.walkspeed = 1
+        self.health = 100
+        self.walkspeed = 2
 
-        self.player_path = BASE_DIR.parent / "assets" / "player.png"
+        #self.player_path = BASE_DIR.parent / "assets" / "player.png"
         self.player_walk = BASE_DIR.parent / "assets" / "player_walk.png"
 
-        self.animation_list = load_animation_sets(self.player_walk, 32, 32, 1, 6)
+        self.animation_list = load_animation_sets(self.player_walk, 32, 32, 5, 4)
 
         self.action = 0      # Current Row (0, 1, or 2)
         self.frame_index = 0 # Current Column
@@ -53,18 +54,17 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_LEFT]:
             self.dx -= self.walkspeed
-            new_action = 0
-
-        if keys[pygame.K_RIGHT]:
+            new_action = 2
+        elif keys[pygame.K_RIGHT]:
             self.dx += self.walkspeed
-            new_action = 0
-
-        if keys[pygame.K_UP]:
+            new_action = 1
+        elif keys[pygame.K_UP]:
             self.dy -= self.walkspeed
-            new_action = 0
-
-        if keys[pygame.K_DOWN]:
+            new_action = 3
+        elif keys[pygame.K_DOWN]:
             self.dy += self.walkspeed
+            new_action = 4
+        else:
             new_action = 0
 
 
@@ -81,6 +81,24 @@ class Player(pygame.sprite.Sprite):
 
         self.image = self.frames[int(self.frame_index)]
 
-    def update(self):
+    def update(self, *args):
         self.rect.x += self.dx
         self.rect.y += self.dy
+
+
+    def check_screen_collision(self, SCREEN_WIDTH, SCREEN_HEIGHT):
+    # Horizontal collision
+        if self.rect.left < 0:
+            self.rect.left = 0
+            
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+            
+
+        # Vertical collision
+        if self.rect.top < 0:
+            self.rect.top = 0
+            
+        if self.rect.bottom > SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
+            
